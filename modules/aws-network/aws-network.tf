@@ -154,3 +154,24 @@ resource "aws_security_group" "sgdb"{
     Name = "${var.prefix} Private Subnet SG"
   }
 }
+
+
+
+
+resource "aws_eip" "nat" {
+  vpc        = true
+  depends_on = [aws_internet_gateway.gw]
+}
+
+resource "aws_nat_gateway" "gw" {
+  count = var.enable_nat_gateway ? 1 : 0
+
+  allocation_id = aws_eip.nat.id
+  subnet_id     = var.public_subnet_cidr
+
+  tags = {
+    Name = "${var.prefix} gw NAT"
+  }
+}
+
+

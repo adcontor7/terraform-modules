@@ -18,7 +18,8 @@ variable "private_subnet_cidr" {
   default = "10.0.2.0/24"
 }
 
-variable "ami" {
-  description = "AMI for EC2"
-  default = "ami-035240afa793cddbb"
+variable "enable_nat_gateway" {
+  description = "Enable Nat Gateway for private Network"
+  type = bool
+  default = true
 }
