@@ -3,9 +3,8 @@ provider "aws" {
 }
 
 module "network" {
-  #TODO USE GITHUB
-  source = "./modules/aws-network"
-
+  source = "github.com/adcontor7/terraform-modules/modules/aws-network"
+  prefix  = "terraform-example"
   providers = {
     aws = aws
   }
