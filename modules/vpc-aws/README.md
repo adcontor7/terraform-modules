@@ -29,6 +29,7 @@ module "network" {
     aws = aws
   }
 }
+
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
