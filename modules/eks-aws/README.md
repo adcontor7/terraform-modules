@@ -1,4 +1,4 @@
-# adcontor7/terraform-modules/aws-vpc-ec2
+# adcontor7/terraform-modules/aws-network
 
 
 A terraform module to create an AWS VPC
