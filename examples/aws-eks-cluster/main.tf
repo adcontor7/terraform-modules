@@ -1,3 +1,6 @@
+##https://www.terraform.io/docs/providers/aws/r/eks_cluster.html
+
+
 locals {
   cluster_name = "terraform-eks-demo"
 }
@@ -28,13 +31,10 @@ module "network" {
   }
 }
 
-
-module "iam" {
-  #source = "git@github.com:adcontor7/terraform-modules.git//modules/iam-aws?ref=v0.0.1"
-  source = "../../modules/iam-aws"
-  prefix  = local.cluster_name
-
-  iam_policy = <<POLICY
+##
+resource "aws_iam_role" "iam_role" {
+  name = local.cluster_name
+  assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -48,6 +48,10 @@ module "iam" {
   ]
 }
 POLICY
+
+  tags = {
+    project = "terraform-examples"
+  }
 
 }
 
@@ -63,8 +67,8 @@ module "k8s-cluster" {
   cluster_name  = local.cluster_name
   create_eks    = true
 
-  iam_role_name = module.iam.role_name
-  iam_role_arn = module.iam.role_arn
+  iam_role_name = aws_iam_role.iam_role.name
+  iam_role_arn  = aws_iam_role.iam_role.arn
   vpc_id        = module.network.vpc_id
   subnets       = concat(module.network.private_subnets_ids, module.network.public_subnets_ids)
 }
