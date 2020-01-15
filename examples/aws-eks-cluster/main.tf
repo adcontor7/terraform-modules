@@ -45,6 +45,7 @@ module "k8s-cluster" {
   }
 
   cluster_name  = local.cluster_name
+  ##False to Remove EKS Security Group and Cluster
   create_eks    = true
 
   vpc_id        = module.network.vpc_id
