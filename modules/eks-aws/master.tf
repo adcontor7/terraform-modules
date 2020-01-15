@@ -5,18 +5,38 @@
 #####
 # EKS Master Cluster IAM Role
 #####
+resource "aws_iam_role" "iam_role" {
+  name = var.cluster_name
+  assume_role_policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "eks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+POLICY
+
+}
+
+
 resource "aws_iam_role_policy_attachment" "terraform-AmazonEKSClusterPolicy" {
   count           = var.create_eks ? 1 : 0
 
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = var.iam_role_name
+  role       = aws_iam_role.iam_role.name
 }
 
 resource "aws_iam_role_policy_attachment" "terraform-AmazonEKSServicePolicy" {
   count           = var.create_eks ? 1 : 0
 
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
-  role       = var.iam_role_name
+  role       = aws_iam_role.iam_role.name
 }
 
 #####
@@ -49,7 +69,7 @@ resource "aws_eks_cluster" "this" {
   count           = var.create_eks ? 1 : 0
 
   name            = var.cluster_name
-  role_arn        = var.iam_role_arn
+  role_arn        = aws_iam_role.iam_role.arn
 
   vpc_config {
     security_group_ids = [aws_security_group.terraform-eks-cluster[0].id]
