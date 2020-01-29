@@ -1,0 +1,5 @@
+#!/bin/bash
+
+"$(dirname $0)/../../scripts/generate_docs.sh"
+
+git add "./*README.md"
