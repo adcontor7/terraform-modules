@@ -1,6 +1,17 @@
 ##https://www.terraform.io/docs/providers/aws/r/eks_cluster.html
 #https://learn.hashicorp.com/terraform/aws/eks-intro
 
+terraform {
+  backend "remote" {
+    hostname = "app.terraform.io"
+    organization = "adcontor7"
+
+    workspaces {
+      name = "aws-eks-cluster"
+    }
+  }
+}
+
 locals {
   cluster_name = "terraform-eks-demo"
 }
